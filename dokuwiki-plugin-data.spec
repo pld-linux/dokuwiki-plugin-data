@@ -2,7 +2,7 @@
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
 Version:	20090213
-Release:	0.1
+Release:	0.2
 License:	GPL v2
 Group:		Applications/WWW
 Source0:	http://dev.splitbrain.org/download/snapshots/data-plugin-latest.tgz
@@ -15,7 +15,8 @@ BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		dokuconf	/etc/webapps/dokuwiki
-%define		dokudir	/usr/share/dokuwiki
+%define		dokudir		/usr/share/dokuwiki
+%define		cachedir	/var/lib/dokuwiki/cache
 %define		plugindir	%{dokudir}/lib/plugins/%{plugin}
 %define		find_lang 	%{_usrlibrpm}/dokuwiki-find-lang.sh %{buildroot}
 
@@ -31,8 +32,10 @@ different to the repository plugin.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{plugindir}
+install -d $RPM_BUILD_ROOT{%{plugindir},%{cachedir}}
 cp -a . $RPM_BUILD_ROOT%{plugindir}
+
+touch $RPM_BUILD_ROOT%{cachedir}/dataplugin.sqlite
 
 # find locales
 %find_lang %{name}.lang
@@ -53,3 +56,4 @@ fi
 %{plugindir}/*.php
 %{plugindir}/*.css
 %{plugindir}/*.sql
+%ghost %attr(660,http,http) %{cachedir}/dataplugin.sqlite
