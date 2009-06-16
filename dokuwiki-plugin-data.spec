@@ -2,7 +2,7 @@
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
 Version:	20090213
-Release:	0.2
+Release:	1
 License:	GPL v2
 Group:		Applications/WWW
 Source0:	http://dev.splitbrain.org/download/snapshots/data-plugin-latest.tgz
