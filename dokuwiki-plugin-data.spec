@@ -2,14 +2,15 @@
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
 Version:	20090213
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Applications/WWW
 Source0:	http://dev.splitbrain.org/download/snapshots/data-plugin-latest.tgz
 # Source0-md5:	6a3ee212496a60a343b62246e8002957
 URL:		http://wiki.splitbrain.org/plugin:data
+Patch0:		interwiki.patch
 BuildRequires:	rpmbuild(macros) >= 1.520
-Requires:	dokuwiki >= 20071221
+Requires:	dokuwiki >= 20090214b-5
 Requires:	php(sqlite)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -29,6 +30,10 @@ different to the repository plugin.
 
 %prep
 %setup -q -n %{plugin}
+%patch0 -p1
+
+# cleanup backups after patching
+find '(' -name '*~' -o -name '*.orig' ')' -print0 | xargs -0 -r -l512 rm -f
 
 %install
 rm -rf $RPM_BUILD_ROOT
