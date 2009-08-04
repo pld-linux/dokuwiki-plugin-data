@@ -1,0 +1,18 @@
+--- data/helper.php	2009-08-04 11:06:52.614221159 +0300
++++ tmp/helper.php	2009-08-04 11:06:34.000000000 +0300
+@@ -148,10 +148,13 @@
+      * @returns array with key, type, ismulti, title
+      */
+     function _column($col){
+-        if(strtolower(substr($col,-1)) == 's'){
++        if (strtolower(substr($col,-2)) == 'es') {
++            $col = substr($col,0,-2);
++            $multi = true;
++        } elseif (strtolower(substr($col,-1)) == 's') {
+             $col = substr($col,0,-1);
+             $multi = true;
+-        }else{
++        } else {
+             $multi = false;
+         }
+         list($key,$type) = explode('_',$col,2);
