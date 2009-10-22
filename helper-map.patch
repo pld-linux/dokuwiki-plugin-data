@@ -1,0 +1,13 @@
+--- data/helper.php	2009-10-22 18:50:43.604400412 +0300
++++ data/helper.php	2009-10-22 18:50:41.000000000 +0300
+@@ -109,6 +109,10 @@
+ 					list($wikiName, $wikiUri) = explode('>', $val, 2);
+                     $outs[] = $R->interwikilink($val, NULL, $wikiName, $wikiUri, true);
+                     break;
++                case 'map':
++					$url = "http://maps.google.com/maps?q=".$val;
++					$outs[] = '<a href="'.$url.'" class="urlextern" title="Google Map: '.hsc($val).'">'.hsc($val).'</a>';
++                    break;
+                 case 'mail':
+                     list($id,$title) = explode(' ',$val,2);
+                     $id = obfuscate(hsc($id));
