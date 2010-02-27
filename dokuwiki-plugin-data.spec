@@ -69,4 +69,4 @@ fi
 %{plugindir}/*.php
 %{plugindir}/*.css
 %{plugindir}/*.sql
-%ghost %attr(660,http,http) %{cachedir}/dataplugin.sqlite
+%attr(660,http,http) %ghost %{cachedir}/dataplugin.sqlite
