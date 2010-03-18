@@ -10,6 +10,7 @@ Source0:	http://download.github.com/splitbrain-dokuwiki-plugin-data-1e1e56a.zip
 URL:		http://wiki.splitbrain.org/plugin:data
 Patch0:		interwiki.patch
 Patch1:		helper-map.patch
+Patch2:		separator-style.patch
 BuildRequires:	rpmbuild(macros) >= 1.520
 Requires:	dokuwiki >= 20090214b-5
 Requires:	php(sqlite)
@@ -34,6 +35,7 @@ different to the repository plugin.
 mv splitbrain-dokuwiki-plugin-data-*/* .
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 version=$(awk '/date/{print $2}' plugin.info.txt)
 if [ $(echo "$version" | tr -d -) != %{version} ]; then

@@ -1,0 +1,20 @@
+add style to list separator, so one could write to userstyle.css:
+
+table.dataplugin_table span.sep {
+    display: block;
+    font-size: 0px;
+}
+
+and have list items listed below each other
+
+--- data/helper.php	2010-02-23 03:00:00.000000000 +0200
++++ data/helper.php	2009-09-10 09:00:02.000000000 +0300
+@@ -129,7 +139,7 @@
+                     }
+             }
+         }
+-        return join(', ',$outs);
++        return join('<span class="sep">, </span>',$outs);
+     }
+ 
+     /**
