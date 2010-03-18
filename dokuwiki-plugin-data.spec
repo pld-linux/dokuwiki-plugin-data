@@ -1,12 +1,12 @@
 %define		plugin		data
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
-Version:	20090810
-Release:	2
+Version:	20100125
+Release:	1
 License:	GPL v2
 Group:		Applications/WWW
-Source0:	http://dev.splitbrain.org/download/snapshots/data-plugin-latest.tgz
-# Source0-md5:	f55adb2c5643693fca8b7ef73944f6e4
+Source0:	http://download.github.com/splitbrain-dokuwiki-plugin-data-1e1e56a.zip
+# Source0-md5:	2f1fbc2c8c88e846d5fd52c8500c0294
 URL:		http://wiki.splitbrain.org/plugin:data
 Patch0:		interwiki.patch
 Patch1:		helper-map.patch
@@ -30,18 +30,19 @@ done here for the repository plugin but its internals are very
 different to the repository plugin.
 
 %prep
-%setup -q -n %{plugin}
+%setup -qc -n %{plugin}
+mv splitbrain-dokuwiki-plugin-data-*/* .
 %patch0 -p1
 %patch1 -p1
 
-# cleanup backups after patching
-find '(' -name '*~' -o -name '*.orig' ')' -print0 | xargs -0 -r -l512 rm -f
-
-version=$(awk -F"'" '/date/{print $4}' helper.php)
+version=$(awk '/date/{print $2}' plugin.info.txt)
 if [ $(echo "$version" | tr -d -) != %{version} ]; then
 	: %%{version} mismatch
 	exit 1
 fi
+
+# cleanup backups after patching
+find '(' -name '*~' -o -name '*.orig' ')' -print0 | xargs -0 -r -l512 rm -f
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -67,6 +68,7 @@ fi
 %dir %{plugindir}
 %{plugindir}/syntax
 %{plugindir}/*.php
+%{plugindir}/*.txt
 %{plugindir}/*.css
 %{plugindir}/*.sql
 %attr(660,http,http) %ghost %{cachedir}/dataplugin.sqlite
