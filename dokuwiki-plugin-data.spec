@@ -1,25 +1,26 @@
 %define		plugin		data
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
-Version:	20100125
-Release:	1
+Version:	20100322
+Release:	0.6
 License:	GPL v2
 Group:		Applications/WWW
-Source0:	http://download.github.com/splitbrain-dokuwiki-plugin-data-1e1e56a.zip
-# Source0-md5:	2f1fbc2c8c88e846d5fd52c8500c0294
+Source0:	http://download.github.com/splitbrain-dokuwiki-plugin-data-3c96821.zip
+# Source0-md5:	65014382f5c12628561b674cdee129ee
 URL:		http://wiki.splitbrain.org/plugin:data
 Patch0:		interwiki.patch
 Patch1:		helper-map.patch
 Patch2:		separator-style.patch
 BuildRequires:	rpmbuild(macros) >= 1.520
+Requires(triggerun):	sqlite
 Requires:	dokuwiki >= 20090214b-5
-Requires:	php(sqlite)
+Requires:	dokuwiki-plugin-sqlite
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		dokuconf	/etc/webapps/dokuwiki
 %define		dokudir		/usr/share/dokuwiki
-%define		cachedir	/var/lib/dokuwiki/cache
+%define		metadir		/var/lib/dokuwiki/meta
 %define		plugindir	%{dokudir}/lib/plugins/%{plugin}
 %define		find_lang 	%{_usrlibrpm}/dokuwiki-find-lang.sh %{buildroot}
 
@@ -31,8 +32,8 @@ done here for the repository plugin but its internals are very
 different to the repository plugin.
 
 %prep
-%setup -qc -n %{plugin}
-mv splitbrain-dokuwiki-plugin-data-*/* .
+%setup -qc
+mv *-%{plugin}-*/* .
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -40,7 +41,7 @@ mv splitbrain-dokuwiki-plugin-data-*/* .
 version=$(awk '/date/{print $2}' plugin.info.txt)
 if [ $(echo "$version" | tr -d -) != %{version} ]; then
 	: %%{version} mismatch
-	exit 1
+	#exit 1
 fi
 
 # cleanup backups after patching
@@ -48,10 +49,9 @@ find '(' -name '*~' -o -name '*.orig' ')' -print0 | xargs -0 -r -l512 rm -f
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{plugindir},%{cachedir}}
+install -d $RPM_BUILD_ROOT{%{plugindir},%{metadir}}
 cp -a . $RPM_BUILD_ROOT%{plugindir}
-
-touch $RPM_BUILD_ROOT%{cachedir}/dataplugin.sqlite
+touch $RPM_BUILD_ROOT%{metadir}/data.sqlite
 
 # find locales
 %find_lang %{name}.lang
@@ -65,12 +65,27 @@ if [ -f %{dokuconf}/local.php ]; then
 	touch %{dokuconf}/local.php
 fi
 
+%triggerun -- %{name} < 20100322-0.5
+# move to new location
+mv /var/lib/dokuwiki/cache/dataplugin.sqlite %{metadir}/data.sqlite
+
+# perform new indexes add manually
+sqlite %{metadir}/data.sqlite <<'EOF'
+CREATE TABLE opts (opt,val);
+CREATE UNIQUE INDEX idx_opt ON opts(opt);
+INSERT INTO opts VALUES ('dbversion', 1);
+EOF
+chown root:http %{metadir}/data.sqlite
+chmod 660 %{metadir}/data.sqlite
+
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %dir %{plugindir}
 %{plugindir}/syntax
+%{plugindir}/conf
+%{plugindir}/db
+%{plugindir}/*.js
 %{plugindir}/*.php
 %{plugindir}/*.txt
 %{plugindir}/*.css
-%{plugindir}/*.sql
-%attr(660,http,http) %ghost %{cachedir}/dataplugin.sqlite
+%attr(660,http,http) %ghost %{metadir}/data.sqlite
