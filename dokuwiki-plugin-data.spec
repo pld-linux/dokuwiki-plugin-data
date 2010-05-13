@@ -12,6 +12,7 @@ Patch0:		interwiki.patch
 Patch1:		helper-map.patch
 Patch2:		separator-style.patch
 BuildRequires:	rpmbuild(macros) >= 1.520
+BuildRequires:	unzip
 Requires(triggerun):	sqlite
 Requires:	dokuwiki >= 20090214b-5
 Requires:	dokuwiki-plugin-sqlite
