@@ -1,12 +1,12 @@
 %define		plugin		data
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
-Version:	20100322
-Release:	0.6
+Version:	20100608
+Release:	0.1
 License:	GPL v2
 Group:		Applications/WWW
-Source0:	http://download.github.com/splitbrain-dokuwiki-plugin-data-3c96821.zip
-# Source0-md5:	65014382f5c12628561b674cdee129ee
+Source0:	http://github.com/splitbrain/%{name}/zipball/master#/%{plugin}-%{version}.zip
+# Source0-md5:	f79901b38df2205eb13720b996336e9c
 URL:		http://wiki.splitbrain.org/plugin:data
 Patch0:		interwiki.patch
 Patch1:		helper-map.patch
@@ -42,7 +42,7 @@ mv *-%{plugin}-*/* .
 version=$(awk '/date/{print $2}' plugin.info.txt)
 if [ $(echo "$version" | tr -d -) != %{version} ]; then
 	: %%{version} mismatch
-	#exit 1
+	exit 1
 fi
 
 # cleanup backups after patching
@@ -82,6 +82,7 @@ chmod 660 %{metadir}/data.sqlite
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %dir %{plugindir}
+%{plugindir}/admin
 %{plugindir}/syntax
 %{plugindir}/conf
 %{plugindir}/db
