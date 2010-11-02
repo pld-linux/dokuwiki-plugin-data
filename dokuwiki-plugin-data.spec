@@ -1,11 +1,13 @@
 %define		plugin		data
+%define		php_min_version 5.0.0
+%include	/usr/lib/rpm/macros.php
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
 Version:	20100608
-Release:	0.1
+Release:	0.2
 License:	GPL v2
 Group:		Applications/WWW
-Source0:	http://github.com/splitbrain/%{name}/zipball/master#/%{plugin}-%{version}.zip
+Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/zipball/master#/%{plugin}-%{version}.zip
 # Source0-md5:	f79901b38df2205eb13720b996336e9c
 URL:		http://wiki.splitbrain.org/plugin:data
 Patch0:		interwiki.patch
@@ -13,9 +15,11 @@ Patch1:		helper-map.patch
 Patch2:		separator-style.patch
 BuildRequires:	rpmbuild(macros) >= 1.520
 BuildRequires:	unzip
+Requires:	php-common >= 4:%{php_min_version}
 Requires(triggerun):	sqlite
 Requires:	dokuwiki >= 20090214b-5
 Requires:	dokuwiki-plugin-sqlite
+Requires:	php-pcre
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -24,6 +28,15 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		metadir		/var/lib/dokuwiki/meta
 %define		plugindir	%{dokudir}/lib/plugins/%{plugin}
 %define		find_lang 	%{_usrlibrpm}/dokuwiki-find-lang.sh %{buildroot}
+
+# no pear deps
+%define		_noautopear	pear
+
+# sqlite is dokuwiki-plugin-sqlite dep, not ours
+%define		_noautophp	php-sqlite
+
+# put it together for rpmbuild
+%define		_noautoreq	%{?_noautophp} %{?_noautopear}
 
 %description
 This plugin allows you to add structured data to any DokuWiki page.
