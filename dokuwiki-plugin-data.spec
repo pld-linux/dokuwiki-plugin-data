@@ -10,8 +10,6 @@ Group:		Applications/WWW
 Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/zipball/master#/%{plugin}-%{version}.zip
 # Source0-md5:	28a601cf6e20c7e8624db8113627a5af
 URL:		http://wiki.splitbrain.org/plugin:data
-Patch0:		interwiki.patch
-Patch1:		helper-map.patch
 Patch2:		separator-style.patch
 Patch3:		separate-rpmdb.patch
 BuildRequires:	rpmbuild(macros) >= 1.520
@@ -49,8 +47,6 @@ different to the repository plugin.
 %prep
 %setup -qc
 mv *-%{plugin}-*/* .
-%patch0 -p1
-%patch1 -p1
 %patch2 -p1
 %patch3 -p1
 
