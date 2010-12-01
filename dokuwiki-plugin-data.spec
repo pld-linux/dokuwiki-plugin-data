@@ -4,7 +4,7 @@
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
 Version:	20100608
-Release:	1
+Release:	3
 License:	GPL v2
 Group:		Applications/WWW
 Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/zipball/master#/%{plugin}-%{version}.zip
@@ -13,6 +13,7 @@ URL:		http://wiki.splitbrain.org/plugin:data
 Patch0:		interwiki.patch
 Patch1:		helper-map.patch
 Patch2:		separator-style.patch
+Patch3:		separate-rpmdb.patch
 BuildRequires:	rpmbuild(macros) >= 1.520
 BuildRequires:	unzip
 Requires:	php-common >= 4:%{php_min_version}
@@ -51,6 +52,7 @@ mv *-%{plugin}-*/* .
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 version=$(awk '/date/{print $2}' plugin.info.txt)
 if [ $(echo "$version" | tr -d -) != %{version} ]; then

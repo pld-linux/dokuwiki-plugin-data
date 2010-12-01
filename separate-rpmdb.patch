@@ -1,0 +1,50 @@
+Separate rpmdb data to rpmdb table, left join via %rpm% field name on demand.
+
+As the rpmdb data is huge comparing to other data, it's best we keep it
+in separate table, if it is still a performance problem, we could use
+separate datafile.
+
+--- dokuwiki-plugin-data-20100608/db/latest.version	2010-11-03 15:20:30.000000000 +0200
++++ dokuwiki-plugin-data-20100608/db/latest.version	2010-12-01 19:50:59.214345000 +0200
+@@ -1 +1 @@
+-4
++5
+--- dokuwiki-plugin-data-20100608/helper.php	2010-12-01 19:51:15.127904142 +0200
++++ dokuwiki-plugin-data-20100608/helper.php	2010-12-01 19:50:59.217678000 +0200
+@@ -182,7 +182,9 @@
+         // fix title for special columns
+         static $specials = array('%title%'  => array('page', 'title'),
+                                  '%pageid%' => array('title', 'page'),
+-                                 '%class%'  => array('class'));
++                                 '%class%'  => array('class'),
++                                 '%rpm%'    => array('rpm'),
++                                );
+         if (isset($specials[$column['title']])) {
+             $s = $specials[$column['title']];
+             $column['title'] = $this->getLang($s[0]);
+--- dokuwiki-plugin-data-20100608/lang/en/lang.php	2010-11-03 15:20:30.000000000 +0200
++++ dokuwiki-plugin-data-20100608/lang/en/lang.php	2010-12-01 19:50:59.217678000 +0200
+@@ -16,6 +16,7 @@
+ $lang['page']      = 'Page';
+ $lang['title']     = 'Page Name';
+ $lang['class']     = 'Page Class';
++$lang['rpm']       = 'RPM Package';
+ 
+ $lang['name']      = 'Type Alias';
+ $lang['type']      = 'Original Type';
+--- dokuwiki-plugin-data-20100608/syntax/table.php	2010-11-03 15:20:30.000000000 +0200
++++ dokuwiki-plugin-data-20100608/syntax/table.php	2010-12-01 19:50:59.217678000 +0200
+@@ -328,6 +328,13 @@
+                 $select[] = '" " || pages.class';
+             }elseif($key == '%title%'){
+                 $select[] = "pages.page || '|' || pages.title";
++            }elseif($key == '%rpm%'){
++                if(!isset($tables[$key])){
++                    $tables[$key] = 'T'.(++$cnt);
++                    $from  .= ' LEFT JOIN rpmdb AS '.$tables[$key].' ON '.$tables[$key].'.pid = pages.pid';
++                }
++                $select[] = "group_concat(".$tables[$key].".value,'\n')";
++
+             }else{
+                 if(!isset($tables[$key])){
+                     $tables[$key] = 'T'.(++$cnt);
