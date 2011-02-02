@@ -12,6 +12,7 @@ Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/zipball/master#/
 URL:		http://wiki.splitbrain.org/plugin:data
 Patch2:		separator-style.patch
 Patch3:		separate-rpmdb.patch
+BuildRequires:	rpm-php-pearprov
 BuildRequires:	rpmbuild(macros) >= 1.520
 BuildRequires:	unzip
 Requires:	php-common >= 4:%{php_min_version}
