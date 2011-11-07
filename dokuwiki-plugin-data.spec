@@ -57,6 +57,9 @@ if [ $(echo "$version" | tr -d -) != %{version} ]; then
 #	exit 1
 fi
 
+# nothing to do with tests
+rm -rf _test
+
 # cleanup backups after patching
 find '(' -name '*~' -o -name '*.orig' ')' -print0 | xargs -0 -r -l512 rm -f
 
