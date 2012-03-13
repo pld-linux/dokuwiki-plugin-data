@@ -3,18 +3,17 @@
 %include	/usr/lib/rpm/macros.php
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
-Version:	20110615
+Version:	20120227
 Release:	1
 License:	GPL v2
 Group:		Applications/WWW
-Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/zipball/master#/%{plugin}-%{version}.zip
-# Source0-md5:	da92dbb3e7ccf8b960aef716251ca642
+Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/tarball/master#/%{plugin}-%{version}.tgz
+# Source0-md5:	15323c553023012d45fe2f79e6d26a10
 URL:		http://wiki.splitbrain.org/plugin:data
 Patch2:		separator-style.patch
 Patch3:		separate-rpmdb.patch
 BuildRequires:	rpm-php-pearprov
 BuildRequires:	rpmbuild(macros) >= 1.520
-BuildRequires:	unzip
 Requires:	php-common >= 4:%{php_min_version}
 Requires(triggerun):	sqlite
 Requires:	dokuwiki >= 20090214b-5

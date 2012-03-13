@@ -4,34 +4,37 @@ As the rpmdb data is huge comparing to other data, it's best we keep it
 in separate table, if it is still a performance problem, we could use
 separate datafile.
 
---- dokuwiki-plugin-data-20100608/db/latest.version	2010-11-03 15:20:30.000000000 +0200
-+++ dokuwiki-plugin-data-20100608/db/latest.version	2010-12-01 19:50:59.214345000 +0200
-@@ -1 +1 @@
--4
-+5
---- dokuwiki-plugin-data-20100608/helper.php	2010-12-01 19:51:15.127904142 +0200
-+++ dokuwiki-plugin-data-20100608/helper.php	2010-12-01 19:50:59.217678000 +0200
-@@ -182,7 +182,9 @@
-         // fix title for special columns
-         static $specials = array('%title%'  => array('page', 'title'),
-                                  '%pageid%' => array('title', 'page'),
--                                 '%class%'  => array('class'));
-+                                 '%class%'  => array('class'),
-+                                 '%rpm%'    => array('rpm'),
-+                                );
+You need to create 'rpm' table manually:
+CREATE TABLE rpmdb (eid INTEGER PRIMARY KEY, pid INTEGER, value);
+
+Handling it automatically would mean have to renumber upstream patches each
+time...
+
+#--- dokuwiki-plugin-data-20120227/db/latest.version~	2012-02-27 16:32:51.000000000 +0200
+#+++ dokuwiki-plugin-data-20120227/db/latest.version	2012-03-13 13:10:57.241251292 +0200
+#@@ -1 +1 @@
+#-5
+#+6
+--- dokuwiki-plugin-data-20120227/helper.php~	2012-03-13 13:10:04.000000000 +0200
++++ dokuwiki-plugin-data-20120227/helper.php	2012-03-13 13:11:33.742793083 +0200
+@@ -184,6 +184,7 @@
+         static $specials = array('%title%'   => array('page', 'title'),
+                                  '%pageid%'  => array('title', 'page'),
+                                  '%class%'   => array('class'),
++                                 '%rpm%'     => array('rpm'),
+                                  '%lastmod%' => array('lastmod','timestamp'));
          if (isset($specials[$column['title']])) {
              $s = $specials[$column['title']];
-             $column['title'] = $this->getLang($s[0]);
---- dokuwiki-plugin-data-20100608/lang/en/lang.php	2010-11-03 15:20:30.000000000 +0200
-+++ dokuwiki-plugin-data-20100608/lang/en/lang.php	2010-12-01 19:50:59.217678000 +0200
+--- dokuwiki-plugin-data-20120227/lang/en/lang.php~	2012-02-27 16:32:51.000000000 +0200
++++ dokuwiki-plugin-data-20120227/lang/en/lang.php	2012-03-13 13:12:04.190745746 +0200
 @@ -16,6 +16,7 @@
  $lang['page']      = 'Page';
  $lang['title']     = 'Page Name';
  $lang['class']     = 'Page Class';
 +$lang['rpm']       = 'RPM Package';
+ $lang['lastmod']   = 'Last Modified';
  
  $lang['name']      = 'Type Alias';
- $lang['type']      = 'Original Type';
 --- dokuwiki-plugin-data-20100608/syntax/table.php	2010-11-03 15:20:30.000000000 +0200
 +++ dokuwiki-plugin-data-20100608/syntax/table.php	2010-12-01 19:50:59.217678000 +0200
 @@ -328,6 +328,13 @@
