@@ -3,12 +3,12 @@
 %include	/usr/lib/rpm/macros.php
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
-Version:	20120227
+Version:	20120404
 Release:	1
 License:	GPL v2
 Group:		Applications/WWW
 Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/tarball/master#/%{plugin}-%{version}.tgz
-# Source0-md5:	15323c553023012d45fe2f79e6d26a10
+# Source0-md5:	b51b923b68167beb60684a0b5cc87842
 URL:		http://wiki.splitbrain.org/plugin:data
 Patch2:		separator-style.patch
 Patch3:		separate-rpmdb.patch
@@ -53,7 +53,7 @@ mv *-%{plugin}-*/* .
 version=$(awk '/date/{print $2}' plugin.info.txt)
 if [ $(echo "$version" | tr -d -) != %{version} ]; then
 	: %%{version} mismatch
-#	exit 1
+	exit 1
 fi
 
 # nothing to do with tests
