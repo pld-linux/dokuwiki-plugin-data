@@ -1,14 +1,16 @@
+# $Revision: 1.26 $, $Date: 2012/06/12 21:19:39 $
 %define		plugin		data
 %define		php_min_version 5.0.0
 %include	/usr/lib/rpm/macros.php
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
-Version:	20120404
+Version:	20120701
 Release:	1
 License:	GPL v2
 Group:		Applications/WWW
-Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/tarball/master#/%{plugin}-%{version}.tgz
-# Source0-md5:	b51b923b68167beb60684a0b5cc87842
+#Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/tarball/master#/%{plugin}-%{version}.tgz
+Source0:	https://github.com/Klap-in/dokuwiki-plugin-data/tarball/pdo#/%{plugin}-pdo-%{version}.tgz
+# Source0-md5:	6b5d2b8df3e458efe70cea3076eb852a
 URL:		http://wiki.splitbrain.org/plugin:data
 Patch2:		separator-style.patch
 Patch3:		separate-rpmdb.patch
@@ -17,7 +19,7 @@ BuildRequires:	rpmbuild(macros) >= 1.520
 Requires:	php-common >= 4:%{php_min_version}
 Requires(triggerun):	sqlite
 Requires:	dokuwiki >= 20090214b-5
-Requires:	dokuwiki-plugin-sqlite
+Requires:	dokuwiki-plugin-sqlite >= 20120619
 Requires:	php-pcre
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -53,7 +55,7 @@ mv *-%{plugin}-*/* .
 version=$(awk '/date/{print $2}' plugin.info.txt)
 if [ $(echo "$version" | tr -d -) != %{version} ]; then
 	: %%{version} mismatch
-	exit 1
+#	exit 1
 fi
 
 # nothing to do with tests
@@ -66,6 +68,7 @@ find '(' -name '*~' -o -name '*.orig' ')' -print0 | xargs -0 -r -l512 rm -f
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{plugindir},%{metadir}}
 cp -a . $RPM_BUILD_ROOT%{plugindir}
+%{__rm} $RPM_BUILD_ROOT%{plugindir}/README
 touch $RPM_BUILD_ROOT%{metadir}/data.sqlite
 
 # find locales
@@ -95,6 +98,7 @@ chmod 660 %{metadir}/data.sqlite
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
+%doc README
 %dir %{plugindir}
 %{plugindir}/admin
 %{plugindir}/syntax
