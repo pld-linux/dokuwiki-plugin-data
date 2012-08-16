@@ -4,7 +4,7 @@
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
 Version:	20120716
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Applications/WWW
 #Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/tarball/master#/%{plugin}-%{version}.tgz
@@ -94,6 +94,19 @@ INSERT INTO opts VALUES ('dbversion', 1);
 EOF
 chown root:http %{metadir}/data.sqlite
 chmod 660 %{metadir}/data.sqlite
+
+%triggerun -- %{name} < 20120716-2
+# perform sqlite2 -> sqlite3 migration of both tools present
+if [ ! -x /usr/bin/sqlite ] || [ ! -x -a -x /usr/bin/sqlite3 ]; then
+	echo >&2 "data plugin: To migrate db from sqlite2 to sqlite3 you need to install 'sqlite' and 'sqlite3' packages"
+	exit 0
+fi
+
+sqlite %{metadir}/data.sqlite .dump > %{metadir}/data.dump
+sqlite3 %{metadir}/data.dump.new < %{metadir}/data.dump
+mv %{metadir}/data.sqlite3{.new,}
+chown root:http %{metadir}/data.sqlite3
+chmod 660 %{metadir}/data.sqlite3
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
