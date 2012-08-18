@@ -7,7 +7,7 @@
 -        $R->info['cache'] = false;
 +
 +        // disable cache only if sorting having some filters
-+        if (!empty($_REQUEST['datasrt']) || !empty($_GET['dataflt']) || !empty($_REQUEST['dataofs'])) {
++        if ($data['dynfilters'] || !empty($_REQUEST['datasrt']) || !empty($_GET['dataflt']) || !empty($_REQUEST['dataofs'])) {
 +            $R->info['cache'] = false;
 +        }
  
