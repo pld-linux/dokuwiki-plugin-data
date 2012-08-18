@@ -13,6 +13,7 @@ Source0:	https://github.com/Klap-in/dokuwiki-plugin-data/tarball/pdo#/%{plugin}-
 URL:		http://wiki.splitbrain.org/plugin:data
 Patch2:		separator-style.patch
 Patch3:		separate-rpmdb.patch
+Patch4:		cache-enable.patch
 BuildRequires:	rpm-php-pearprov
 BuildRequires:	rpmbuild(macros) >= 1.520
 Requires:	php(core) >= %{php_min_version}
@@ -51,6 +52,7 @@ different to the repository plugin.
 mv *-%{plugin}-*/* .
 %patch2 -p1
 %patch3 -p1
+%patch4 -p0
 
 version=$(awk '/date/{print $2}' plugin.info.txt)
 if [ $(echo "$version" | tr -d -) != %{version} ]; then
