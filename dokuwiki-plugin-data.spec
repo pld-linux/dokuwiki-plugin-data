@@ -4,7 +4,7 @@
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
 Version:	20120716
-Release:	3
+Release:	4
 License:	GPL v2
 Group:		Applications/WWW
 #Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/tarball/master#/%{plugin}-%{version}.tgz
@@ -15,7 +15,7 @@ Patch2:		separator-style.patch
 Patch3:		separate-rpmdb.patch
 BuildRequires:	rpm-php-pearprov
 BuildRequires:	rpmbuild(macros) >= 1.520
-Requires:	php-common >= 4:%{php_min_version}
+Requires:	php(core) >= %{php_min_version}
 Requires(triggerun):	sqlite
 Requires:	dokuwiki >= 20090214b-5
 Requires:	dokuwiki-plugin-sqlite >= 20120619
