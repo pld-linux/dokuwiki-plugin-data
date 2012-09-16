@@ -17,6 +17,7 @@ BuildRequires:	rpm-php-pearprov
 BuildRequires:	rpmbuild(macros) >= 1.520
 Requires:	php(core) >= %{php_min_version}
 Requires(triggerun):	sqlite
+Requires(triggerun):	sqlite3
 Requires:	dokuwiki >= 20090214b-5
 Requires:	dokuwiki-plugin-sqlite >= 20120619
 Requires:	php(pcre)
@@ -68,7 +69,10 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{plugindir},%{metadir}}
 cp -a . $RPM_BUILD_ROOT%{plugindir}
 %{__rm} $RPM_BUILD_ROOT%{plugindir}/README
+# sqlite2: php-sqlite
 touch $RPM_BUILD_ROOT%{metadir}/data.sqlite
+# sqlite3: php-pdo-sqlite
+touch $RPM_BUILD_ROOT%{metadir}/data.sqlite3
 
 # find locales
 %find_lang %{name}.lang
@@ -125,3 +129,4 @@ chmod 660 %{metadir}/data.sqlite3
 %{plugindir}/*.txt
 %{plugindir}/*.css
 %attr(660,http,http) %ghost %{metadir}/data.sqlite
+%attr(660,http,http) %ghost %{metadir}/data.sqlite3
