@@ -8,7 +8,7 @@ Release:	4
 License:	GPL v2
 Group:		Applications/WWW
 #Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/tarball/master#/%{plugin}-%{version}.tgz
-Source0:	https://github.com/Klap-in/dokuwiki-plugin-data/tarball/pdo#/%{plugin}-pdo-%{version}.tgz
+Source0:	https://github.com/Klap-in/dokuwiki-plugin-data/tarball/pdo/%{plugin}-pdo-%{version}.tgz
 # Source0-md5:	49cfa6206cdf138593905d3622cb1a4a
 URL:		http://wiki.splitbrain.org/plugin:data
 Patch2:		separator-style.patch
