@@ -7,13 +7,13 @@ table.dataplugin_table span.sep {
 
 and have list items listed below each other
 
---- data/helper.php	2010-02-23 03:00:00.000000000 +0200
-+++ data/helper.php	2009-09-10 09:00:02.000000000 +0300
-@@ -129,7 +139,7 @@
+--- dokuwiki-plugin-data-20160311/helper.php~	2016-07-01 14:27:21.000000000 +0300
++++ dokuwiki-plugin-data-20160311/helper.php	2016-11-22 23:05:37.213943088 +0200
+@@ -360,7 +360,7 @@
                      }
              }
          }
--        return join(', ',$outs);
+-        return join(', ', $outs);
 +        return join('<span class="sep">, </span>',$outs);
      }
  

@@ -55,19 +55,20 @@ different to the repository plugin.
 mv *-%{plugin}-*/* .
 %patch2 -p1
 %patch3 -p1
-%patch4 -p0
-
-version=$(awk '/date/{print $2}' plugin.info.txt)
-if [ $(echo "$version" | tr -d -) != %{version} ]; then
-	: %%{version} mismatch
-#	exit 1
-fi
+%patch4 -p1
 
 # nothing to do with tests
 rm -rf _test
 
 # cleanup backups after patching
 find '(' -name '*~' -o -name '*.orig' ')' -print0 | xargs -0 -r -l512 rm -f
+
+%build
+version=$(awk '/date/{print $2}' plugin.info.txt)
+if [ $(echo "$version" | tr -d -) != %{version} ]; then
+	: %%{version} mismatch
+	exit 1
+fi
 
 %install
 rm -rf $RPM_BUILD_ROOT

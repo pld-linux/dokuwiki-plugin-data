@@ -10,21 +10,16 @@ CREATE TABLE rpmdb (eid INTEGER PRIMARY KEY, pid INTEGER, value);
 Handling it automatically would mean have to renumber upstream patches each
 time...
 
-#--- dokuwiki-plugin-data-20120227/db/latest.version~	2012-02-27 16:32:51.000000000 +0200
-#+++ dokuwiki-plugin-data-20120227/db/latest.version	2012-03-13 13:10:57.241251292 +0200
-#@@ -1 +1 @@
-#-5
-#+6
---- dokuwiki-plugin-data-20120227/helper.php~	2012-03-13 13:10:04.000000000 +0200
-+++ dokuwiki-plugin-data-20120227/helper.php	2012-03-13 13:11:33.742793083 +0200
-@@ -184,6 +184,7 @@
-         static $specials = array('%title%'   => array('page', 'title'),
-                                  '%pageid%'  => array('title', 'page'),
-                                  '%class%'   => array('class'),
-+                                 '%rpm%'     => array('rpm'),
-                                  '%lastmod%' => array('lastmod','timestamp'));
-         if (isset($specials[$column['title']])) {
-             $s = $specials[$column['title']];
+--- dokuwiki-plugin-data-20160311/helper.php~	2016-11-22 23:06:06.000000000 +0200
++++ dokuwiki-plugin-data-20160311/helper.php	2016-11-22 23:06:44.267324645 +0200
+@@ -385,6 +385,7 @@
+             '%title%'   => array('page', 'title'),
+             '%pageid%'  => array('title', 'page'),
+             '%class%'   => array('class'),
++            '%rpm%'     => array('rpm'),
+             '%lastmod%' => array('lastmod', 'timestamp')
+         );
+         if(isset($specials[$column['title']])) {
 --- dokuwiki-plugin-data-20120227/lang/en/lang.php~	2012-02-27 16:32:51.000000000 +0200
 +++ dokuwiki-plugin-data-20120227/lang/en/lang.php	2012-03-13 13:12:04.190745746 +0200
 @@ -16,6 +16,7 @@
@@ -35,19 +30,19 @@ time...
  $lang['lastmod']   = 'Last Modified';
  
  $lang['name']      = 'Type Alias';
---- dokuwiki-plugin-data-20100608/syntax/table.php	2010-11-03 15:20:30.000000000 +0200
-+++ dokuwiki-plugin-data-20100608/syntax/table.php	2010-12-01 19:50:59.217678000 +0200
-@@ -328,6 +328,13 @@
-                 $select[] = '" " || pages.class';
-             }elseif($key == '%title%'){
+--- dokuwiki-plugin-data-20160311/syntax/table.php~	2016-07-01 14:27:21.000000000 +0300
++++ dokuwiki-plugin-data-20160311/syntax/table.php	2016-11-22 23:08:01.967907897 +0200
+@@ -584,6 +584,13 @@
+                 $select[] = 'pages.lastmod';
+             } elseif($key == '%title%') {
                  $select[] = "pages.page || '|' || pages.title";
-+            }elseif($key == '%rpm%'){
++            } elseif($key == '%rpm%'){
 +                if(!isset($tables[$key])){
 +                    $tables[$key] = 'T'.(++$cnt);
 +                    $from  .= ' LEFT JOIN rpmdb AS '.$tables[$key].' ON '.$tables[$key].'.pid = pages.pid';
 +                }
 +                $select[] = "group_concat(".$tables[$key].".value,'\n')";
 +
-             }else{
-                 if(!isset($tables[$key])){
-                     $tables[$key] = 'T'.(++$cnt);
+             } else {
+                 if(!isset($tables[$key])) {
+                     $tables[$key] = 'T' . (++$cnt);

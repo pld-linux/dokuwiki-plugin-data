@@ -1,15 +1,14 @@
---- syntax/table.php~	2012-08-07 18:56:10.000000000 +0300
-+++ syntax/table.php	2012-08-17 01:26:46.814865996 +0300
-@@ -204,7 +204,11 @@
-     function render($format, &$R, $data) {
-         if($format != 'xhtml') return false;
-         if(is_null($data)) return false;
+--- dokuwiki-plugin-data-20160311/syntax/table.php~	2016-11-22 23:08:27.000000000 +0200
++++ dokuwiki-plugin-data-20160311/syntax/table.php	2016-11-22 23:08:54.437219264 +0200
+@@ -245,7 +245,10 @@
+         $sqlite = $this->dthlp->_getDB();
+         if(!$sqlite) return false;
+ 
 -        $R->info['cache'] = false;
-+
 +        // disable cache only if sorting having some filters
 +        if ($data['dynfilters'] || !empty($_REQUEST['datasrt']) || !empty($_GET['dataflt']) || !empty($_REQUEST['dataofs'])) {
 +            $R->info['cache'] = false;
 +        }
  
-         $sqlite = $this->dthlp->_getDB();
-         if(!$sqlite) return false;
+         //reset counters
+         $this->sums = array();
