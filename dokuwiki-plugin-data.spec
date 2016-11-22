@@ -1,16 +1,19 @@
+%define		subver	2016-03-11
+%define		ver		%(echo %{subver} | tr -d -)
 %define		plugin		data
-%define		php_min_version 5.0.0
+%define		php_min_version 5.3.0
 %include	/usr/lib/rpm/macros.php
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
-Version:	20120716
-Release:	4
+Version:	%{ver}
+Release:	0.1
 License:	GPL v2
 Group:		Applications/WWW
-#Source0:	http://github.com/splitbrain/dokuwiki-plugin-%{plugin}/tarball/master#/%{plugin}-%{version}.tgz
-Source0:	https://github.com/Klap-in/dokuwiki-plugin-data/tarball/pdo/%{plugin}-pdo-%{version}.tgz
-# Source0-md5:	49cfa6206cdf138593905d3622cb1a4a
-URL:		http://wiki.splitbrain.org/plugin:data
+# using master snapshot, upstream doesn't tag their code
+# https://github.com/splitbrain/dokuwiki-plugin-data/issues/206
+Source0:	https://github.com/splitbrain/dokuwiki-plugin-%{plugin}/archive/master/%{plugin}-%{subver}.tar.gz
+# Source0-md5:	eea5c5398f01db4f2b4f22c71d601aea
+URL:		https://www.dokuwiki.org/plugin:data
 Patch2:		separator-style.patch
 Patch3:		separate-rpmdb.patch
 Patch4:		cache-enable.patch
