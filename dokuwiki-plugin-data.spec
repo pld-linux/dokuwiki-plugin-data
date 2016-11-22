@@ -52,13 +52,14 @@ different to the repository plugin.
 
 %prep
 %setup -qc
-mv *-%{plugin}-*/* .
+mv *-%{plugin}-*/{.??*,*} .
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
 
 # nothing to do with tests
 rm -rf _test
+rm .travis.yml
 
 # cleanup backups after patching
 find '(' -name '*~' -o -name '*.orig' ')' -print0 | xargs -0 -r -l512 rm -f
@@ -126,13 +127,14 @@ chmod 660 %{metadir}/data.sqlite3
 %defattr(644,root,root,755)
 %doc README
 %dir %{plugindir}
-%{plugindir}/admin
-%{plugindir}/syntax
-%{plugindir}/conf
-%{plugindir}/db
 %{plugindir}/*.js
 %{plugindir}/*.php
 %{plugindir}/*.txt
 %{plugindir}/*.css
+%{plugindir}/admin
+%{plugindir}/conf
+%{plugindir}/db
+%{plugindir}/helper
+%{plugindir}/syntax
 %attr(660,http,http) %ghost %{metadir}/data.sqlite
 %attr(660,http,http) %ghost %{metadir}/data.sqlite3
