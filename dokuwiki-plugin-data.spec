@@ -1,4 +1,4 @@
-%define		subver	2016-03-11
+%define		subver	2017-02-08
 %define		ver		%(echo %{subver} | tr -d -)
 %define		plugin		data
 %define		php_min_version 5.3.0
@@ -9,10 +9,8 @@ Version:	%{ver}
 Release:	0.1
 License:	GPL v2
 Group:		Applications/WWW
-# using master snapshot, upstream doesn't tag their code
-# https://github.com/splitbrain/dokuwiki-plugin-data/issues/206
-Source0:	https://github.com/splitbrain/dokuwiki-plugin-%{plugin}/archive/master/%{plugin}-%{subver}.tar.gz
-# Source0-md5:	eea5c5398f01db4f2b4f22c71d601aea
+Source0:	https://github.com/splitbrain/dokuwiki-plugin-%{plugin}/archive/%{subver}/%{plugin}-%{subver}.tar.gz
+# Source0-md5:	0ec0720f8b4430377b66db1c9f57b9ea
 URL:		https://www.dokuwiki.org/plugin:data
 Patch2:		separator-style.patch
 Patch3:		separate-rpmdb.patch
