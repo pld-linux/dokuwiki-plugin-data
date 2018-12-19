@@ -1,16 +1,16 @@
-%define		subver	2017-02-08
+%define		subver	2018-04-09
 %define		ver		%(echo %{subver} | tr -d -)
 %define		plugin		data
-%define		php_min_version 5.3.0
+%define		php_min_version 5.6.0
 %include	/usr/lib/rpm/macros.php
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
 Version:	%{ver}
-Release:	0.1
+Release:	1
 License:	GPL v2
 Group:		Applications/WWW
 Source0:	https://github.com/splitbrain/dokuwiki-plugin-%{plugin}/archive/%{subver}/%{plugin}-%{subver}.tar.gz
-# Source0-md5:	0ec0720f8b4430377b66db1c9f57b9ea
+# Source0-md5:	2191494977b65946431f5c0ce123f977
 URL:		https://www.dokuwiki.org/plugin:data
 Patch2:		separator-style.patch
 Patch3:		separate-rpmdb.patch
@@ -91,44 +91,15 @@ if [ -f %{dokuconf}/local.php ]; then
 	touch %{dokuconf}/local.php
 fi
 
-%triggerun -- %{name} < 20100322-0.5
-# move to new location
-mv /var/lib/dokuwiki/cache/dataplugin.sqlite %{metadir}/data.sqlite
-
-# perform new indexes add manually
-sqlite %{metadir}/data.sqlite <<'EOF'
-CREATE TABLE opts (opt,val);
-CREATE UNIQUE INDEX idx_opt ON opts(opt);
-INSERT INTO opts VALUES ('dbversion', 1);
-EOF
-chown root:http %{metadir}/data.sqlite
-chmod 660 %{metadir}/data.sqlite
-
-%triggerun -- %{name} < 20120716-3
-if [ -f %{metadir}/data.sqlite3 ]; then
-	# already migrated
-	exit 0
-fi
-# perform sqlite2 -> sqlite3 migration of both tools present
-if [ ! -x /usr/bin/sqlite ] || [ ! -x /usr/bin/sqlite3 ]; then
-	echo >&2 "data plugin: To migrate db from sqlite2 to sqlite3 you need to install 'sqlite' and 'sqlite3' packages"
-	exit 0
-fi
-
-sqlite %{metadir}/data.sqlite .dump > %{metadir}/data.dump
-sqlite3 %{metadir}/data.dump.new < %{metadir}/data.dump
-mv %{metadir}/data.sqlite3{.new,}
-chown root:http %{metadir}/data.sqlite3
-chmod 660 %{metadir}/data.sqlite3
-
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc README
 %dir %{plugindir}
+%{plugindir}/*.css
 %{plugindir}/*.js
 %{plugindir}/*.php
+%{plugindir}/*.svg
 %{plugindir}/*.txt
-%{plugindir}/*.css
 %{plugindir}/admin
 %{plugindir}/conf
 %{plugindir}/db
