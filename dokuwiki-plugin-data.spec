@@ -17,8 +17,6 @@ Patch4:		cache-enable.patch
 BuildRequires:	rpm-php-pearprov
 BuildRequires:	rpmbuild(macros) >= 1.520
 Requires:	php(core) >= %{php_min_version}
-Requires(triggerun):	sqlite
-Requires(triggerun):	sqlite3
 Requires:	dokuwiki >= 20090214b-5
 Requires:	dokuwiki-plugin-sqlite >= 20130508
 Requires:	php(pcre)
