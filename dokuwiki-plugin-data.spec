@@ -1,4 +1,4 @@
-%define		subver	2019-03-20
+%define		subver	2020-09-18
 %define		ver		%(echo %{subver} | tr -d -)
 %define		plugin		data
 %define		php_min_version 5.6.0
@@ -9,7 +9,7 @@ Release:	1
 License:	GPL v2
 Group:		Applications/WWW
 Source0:	https://github.com/splitbrain/dokuwiki-plugin-%{plugin}/archive/%{subver}/%{plugin}-%{subver}.tar.gz
-# Source0-md5:	26a8dc7c282c88e9dc3c2b3df0d8315e
+# Source0-md5:	c0add7d6b24f97f9f1ac18b4f82835bc
 URL:		https://www.dokuwiki.org/plugin:data
 Patch2:		separator-style.patch
 Patch3:		separate-rpmdb.patch
