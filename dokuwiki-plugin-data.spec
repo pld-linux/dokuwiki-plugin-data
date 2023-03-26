@@ -5,7 +5,7 @@
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
 Version:	%{ver}
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Applications/WWW
 Source0:	https://github.com/splitbrain/dokuwiki-plugin-%{plugin}/archive/%{subver}/%{plugin}-%{subver}.tar.gz
@@ -15,10 +15,11 @@ Patch2:		separator-style.patch
 Patch3:		separate-rpmdb.patch
 Patch4:		cache-enable.patch
 BuildRequires:	rpm-php-pearprov
+BuildRequires:	rpmbuild(find_lang) >= 1.41
 BuildRequires:	rpmbuild(macros) >= 1.520
-Requires:	php(core) >= %{php_min_version}
 Requires:	dokuwiki >= 20090214b-5
 Requires:	dokuwiki-plugin-sqlite >= 20130508
+Requires:	php(core) >= %{php_min_version}
 Requires:	php(pcre)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -27,7 +28,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		dokudir		/usr/share/dokuwiki
 %define		metadir		/var/lib/dokuwiki/meta
 %define		plugindir	%{dokudir}/lib/plugins/%{plugin}
-%define		find_lang 	%{_usrlibrpm}/dokuwiki-find-lang.sh %{buildroot}
 
 # no pear deps
 %define		_noautopear	pear
@@ -77,7 +77,7 @@ touch $RPM_BUILD_ROOT%{metadir}/data.sqlite
 touch $RPM_BUILD_ROOT%{metadir}/data.sqlite3
 
 # find locales
-%find_lang %{name}.lang
+%find_lang %{name}.lang --with-dokuwiki
 
 %clean
 rm -rf $RPM_BUILD_ROOT
