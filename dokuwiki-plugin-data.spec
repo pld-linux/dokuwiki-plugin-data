@@ -1,15 +1,15 @@
-%define		subver	2020-09-18
+%define		subver	2022-07-27
 %define		ver		%(echo %{subver} | tr -d -)
 %define		plugin		data
 %define		php_min_version 5.6.0
 Summary:	DokuWiki Structured Data Plugin
 Name:		dokuwiki-plugin-%{plugin}
 Version:	%{ver}
-Release:	2
+Release:	1
 License:	GPL v2
 Group:		Applications/WWW
 Source0:	https://github.com/splitbrain/dokuwiki-plugin-%{plugin}/archive/%{subver}/%{plugin}-%{subver}.tar.gz
-# Source0-md5:	c0add7d6b24f97f9f1ac18b4f82835bc
+# Source0-md5:	2a03d1428b83dd279132b8d5772e6e9d
 URL:		https://www.dokuwiki.org/plugin:data
 Patch2:		separator-style.patch
 Patch3:		separate-rpmdb.patch
@@ -97,6 +97,7 @@ fi
 %{plugindir}/*.php
 %{plugindir}/*.svg
 %{plugindir}/*.txt
+%{plugindir}/Form
 %{plugindir}/admin
 %{plugindir}/conf
 %{plugindir}/db
