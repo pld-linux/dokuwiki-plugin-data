@@ -30,8 +30,8 @@ time...
  $lang['lastmod']   = 'Last Modified';
  
  $lang['name']      = 'Type Alias';
---- dokuwiki-plugin-data-20160311/syntax/table.php~	2016-07-01 14:27:21.000000000 +0300
-+++ dokuwiki-plugin-data-20160311/syntax/table.php	2016-11-22 23:08:01.967907897 +0200
+--- dokuwiki-plugin-data-20160311/syntax/table.php	2016-11-22 23:08:01.967907897 +0200
++++ dokuwiki-plugin-data-20220727/syntax/table.php	2023-04-25 15:27:50.645943694 +0300
 @@ -584,6 +584,13 @@
                  $select[] = 'pages.lastmod';
              } elseif($key == '%title%') {
@@ -46,3 +46,25 @@ time...
              } else {
                  if(!isset($tables[$key])) {
                      $tables[$key] = 'T' . (++$cnt);
+@@ -686,6 +693,21 @@
+                 GROUP BY W1.pid
+                 $order";
+ 
++        // Re-order LEFT JOIN pages before LEFT JOIN rpm
++        $sql = preg_replace_callback('/
++            (?P<before>.+)
++            (?P<rpmdb>LEFT\sJOIN\srpmdb\sAS\sT\d+\sON\sT\d+.pid\s=\spages.pid\s+)
++            (?P<pages>LEFT\sJOIN\spages\sON\sW\d+\.pid\s*=pages\.pid\s+)
++            (?P<after>.+)
++        /xm', function ($m) {
++            return implode("", [
++                $m['before'],
++                $m['pages'],
++                $m['rpmdb'],
++                $m['after'],
++            ]);
++        }, $sql);
++
+         // offset and limit
+         if($data['limit']) {
+             $sql .= ' LIMIT ' . ($data['limit'] + 1);
